@@ -12,11 +12,17 @@ size = Vector2(114, 12)
 radius = 13.0384
 
 [node name="Node2D" type="Node2D"]
-position = Vector2(594, 336)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(536, 338)
+scale = Vector2(2, 2)
 collision_layer = 64
 metadata/_edit_group_ = true
+
+[node name="PinJoint2D" type="PinJoint2D" parent="StaticBody2D"]
+scale = Vector2(0.5, 0.5)
+node_a = NodePath("..")
+node_b = NodePath("../../RigidBody2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_vrdmp")
@@ -37,21 +43,22 @@ grow_vertical = 2
 color = Color(0.129412, 0.352941, 1, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="PinJoint2D" type="PinJoint2D" parent="."]
-visible = false
-node_a = NodePath("../StaticBody2D")
-node_b = NodePath("../StaticBody2D2")
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(736, 339)
+metadata/_edit_group_ = true
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+[node name="StaticBody2D2" type="StaticBody2D" parent="RigidBody2D"]
+position = Vector2(-200, -1)
+scale = Vector2(2, 2)
 collision_layer = 128
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/StaticBody2D2"]
 position = Vector2(50, 0)
 shape = SubResource("RectangleShape2D_r527v")
 disabled = true
 
-[node name="ColorRect" type="ColorRect" parent="StaticBody2D2"]
+[node name="ColorRect" type="ColorRect" parent="RigidBody2D/StaticBody2D2"]
 offset_left = -7.0
 offset_top = -6.0
 offset_right = 107.0
@@ -59,18 +66,9 @@ offset_bottom = 6.0
 color = Color(0.671291, 0.349331, 0.0102401, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2(108, 0)
-metadata/_edit_group_ = true
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
 shape = SubResource("CircleShape2D_4ofid")
 
 [node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
-scale = Vector2(0.031, 0.031)
+scale = Vector2(0.08, 0.08)
 texture = ExtResource("1_ll62s")
-
-[node name="PinJoint2D2" type="PinJoint2D" parent="."]
-position = Vector2(108, 0)
-node_a = NodePath("../StaticBody2D2")
-node_b = NodePath("../RigidBody2D")
