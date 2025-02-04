@@ -1,6 +1,31 @@
-[gd_scene load_steps=5 format=3 uid="uid://cr5mjvgy17k46"]
+[gd_scene load_steps=6 format=3 uid="uid://cr5mjvgy17k46"]
 
-[ext_resource type="Texture2D" uid="uid://bth42cpxxl3vt" path="res://circle.png" id="1_ll62s"]
+[ext_resource type="Texture2D" uid="uid://bth42cpxxl3vt" path="res://Sprites/circle.png" id="1_ll62s"]
+
+[sub_resource type="GDScript" id="GDScript_nebdw"]
+script/source = "extends StaticBody2D
+
+@export var max_veloc = 400
+@export var max_accel = 10
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	var accel = 0;
+	if Input.is_action_just_pressed(\"accel_left\"):
+		accel = -max_accel;
+	if Input.is_action_just_pressed(\"accel_right\"):
+		accel = max_accel;
+	
+	self.constant_linear_velocity += Vector2(accel,0);
+	#if abs(self.constant_linear_velocity.x) > max_veloc:
+	#		self.constant_linear_velocity.x = 
+	
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vrdmp"]
 size = Vector2(50, 40)
@@ -11,24 +36,25 @@ size = Vector2(114, 12)
 [sub_resource type="CircleShape2D" id="CircleShape2D_4ofid"]
 radius = 13.0384
 
-[node name="Node2D" type="Node2D"]
+[node name="Root Node" type="Node2D"]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="Motor" type="StaticBody2D" parent="."]
 position = Vector2(536, 338)
 scale = Vector2(2, 2)
 collision_layer = 64
+script = SubResource("GDScript_nebdw")
 metadata/_edit_group_ = true
 
-[node name="PinJoint2D" type="PinJoint2D" parent="StaticBody2D"]
+[node name="Pendulum Attachment" type="PinJoint2D" parent="Motor"]
 scale = Vector2(0.5, 0.5)
 node_a = NodePath("..")
-node_b = NodePath("../../RigidBody2D")
+node_b = NodePath("../../Pendulum")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="Motor Collision" type="CollisionShape2D" parent="Motor"]
 shape = SubResource("RectangleShape2D_vrdmp")
 disabled = true
 
-[node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
+[node name="Motor Shape" type="ColorRect" parent="Motor"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -43,22 +69,22 @@ grow_vertical = 2
 color = Color(0.129412, 0.352941, 1, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
+[node name="Pendulum" type="RigidBody2D" parent="."]
 position = Vector2(736, 339)
 metadata/_edit_group_ = true
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="RigidBody2D"]
+[node name="Pendulum Rod" type="StaticBody2D" parent="Pendulum"]
 position = Vector2(-200, -1)
 scale = Vector2(2, 2)
 collision_layer = 128
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D/StaticBody2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pendulum/Pendulum Rod"]
 position = Vector2(50, 0)
 shape = SubResource("RectangleShape2D_r527v")
 disabled = true
 
-[node name="ColorRect" type="ColorRect" parent="RigidBody2D/StaticBody2D2"]
+[node name="ColorRect" type="ColorRect" parent="Pendulum/Pendulum Rod"]
 offset_left = -7.0
 offset_top = -6.0
 offset_right = 107.0
@@ -66,9 +92,9 @@ offset_bottom = 6.0
 color = Color(0.671291, 0.349331, 0.0102401, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+[node name="Weight Collision" type="CollisionShape2D" parent="Pendulum"]
 shape = SubResource("CircleShape2D_4ofid")
 
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+[node name="Weight Shape" type="Sprite2D" parent="Pendulum"]
 scale = Vector2(0.08, 0.08)
 texture = ExtResource("1_ll62s")
