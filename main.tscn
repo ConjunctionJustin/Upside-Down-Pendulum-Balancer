@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cr5mjvgy17k46"]
+[gd_scene load_steps=9 format=3 uid="uid://cr5mjvgy17k46"]
 
 [ext_resource type="Texture2D" uid="uid://bth42cpxxl3vt" path="res://Sprites/circle.png" id="1_ll62s"]
 [ext_resource type="Script" path="res://Scripts/motor.gd" id="1_mrutp"]
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_nat0i"]
 [ext_resource type="Texture2D" uid="uid://cnbfdu7p120tq" path="res://Sprites/blue_rectangle.png" id="2_4nrwm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vrdmp"]
@@ -13,16 +14,24 @@ size = Vector2(114, 12)
 [sub_resource type="CircleShape2D" id="CircleShape2D_4ofid"]
 radius = 13.0384
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_pik15"]
+a = Vector2(0, -10)
+
 [node name="Root Node" type="Node2D"]
+script = ExtResource("1_nat0i")
 
 [node name="Motor" type="RigidBody2D" parent="."]
-position = Vector2(536, 338)
+position = Vector2(576, 338)
+collision_layer = 2
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_mrutp")
+max_veloc = 250
+max_force = 1000
 metadata/_edit_group_ = true
 
 [node name="Pendulum Mount" type="StaticBody2D" parent="Motor"]
+collision_layer = 2
 
 [node name="Mount Collision" type="CollisionShape2D" parent="Motor/Pendulum Mount"]
 visible = false
@@ -44,10 +53,9 @@ texture = ExtResource("2_4nrwm")
 visible = false
 scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_vrdmp")
-disabled = true
 
 [node name="Pendulum" type="RigidBody2D" parent="."]
-position = Vector2(536, 538)
+position = Vector2(576, 538)
 rotation = 1.5708
 metadata/_edit_group_ = true
 
@@ -78,3 +86,22 @@ shape = SubResource("CircleShape2D_4ofid")
 [node name="Weight Shape" type="Sprite2D" parent="Pendulum"]
 scale = Vector2(0.08, 0.08)
 texture = ExtResource("1_ll62s")
+
+[node name="Edge Borders" type="Node2D" parent="."]
+visible = false
+position = Vector2(0, 338)
+
+[node name="Right Border" type="RigidBody2D" parent="Edge Borders"]
+position = Vector2(1152, 0)
+gravity_scale = 0.0
+freeze = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Edge Borders/Right Border"]
+shape = SubResource("SegmentShape2D_pik15")
+
+[node name="Left Border" type="RigidBody2D" parent="Edge Borders"]
+gravity_scale = 0.0
+freeze = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Edge Borders/Left Border"]
+shape = SubResource("SegmentShape2D_pik15")
