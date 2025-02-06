@@ -1,12 +1,13 @@
 extends Resource
 
 func control_force(root: Node2D) -> float:
-	var motor = root.get_child(0)
-	var pendulum = root.get_child(1)
-	
-	var force: float = 5 * (pendulum.transform.x - motor.transform.x)
+	var motor: RigidBody2D = root.get_node("Motor")
+	var pendulum: RigidBody2D = root.get_node("Pendulum")
+
+	var force: float = 0.1 * (pendulum.transform.origin.x - motor.transform.origin.x)**3
 	if abs(force) > motor.max_force:
 		force = motor.max_force * sign(force)
+
 	return force
 
 func test() -> String:

@@ -55,8 +55,8 @@ scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_vrdmp")
 
 [node name="Pendulum" type="RigidBody2D" parent="."]
-position = Vector2(576, 538)
-rotation = 1.5708
+position = Vector2(576, 138)
+rotation = -1.5708
 metadata/_edit_group_ = true
 
 [node name="Pendulum Rod" type="StaticBody2D" parent="Pendulum"]

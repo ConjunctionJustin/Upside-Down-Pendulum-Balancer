@@ -17,7 +17,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var force = 0;
 	
-	force = algorithm.test()
+	force = algorithm.control_force(self)
 	
 	if Input.is_action_pressed("accel_left"):
 		force = -max_force;
